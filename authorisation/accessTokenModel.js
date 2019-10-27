@@ -34,7 +34,7 @@ we can just create an empty client with all null values.Because the client is a 
  - as opposed to a client we've retrieved through another operation - we just pass false for the error parameter
   as no errors can occur due to the aforemtioned hardcoding */
 function getClient(clientID, clientSecret, callback){
-
+console.log("**************************************")
   const client = {
     clientID,
     clientSecret,
@@ -99,7 +99,7 @@ function getAccessToken(bearerToken, callback) {
 
   //try and get the userID from the db using the bearerToken
   accessTokensDBHelper.getUserIDFromBearerToken(bearerToken, (userID) => {
-
+    console.log("************************** "+userID)
     //create the token using the retrieved userID
     const accessToken = {
       user: {

@@ -48,7 +48,7 @@ function registerUser(req, res){
 
 
 function login(registerUserQuery, res){
-
+console.log("**************************************************************************")
 
 }
 

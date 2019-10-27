@@ -10,17 +10,16 @@ expressApp.oauth = oAuth2Server({
   model: oAuthModel,
   grants: ['password'],
   debug: true
+  
 })
 
-const restrictedAreaRoutesMethods = require('./restrictedArea/restrictedAreaRoutesMethods.js')
-const restrictedAreaRoutes = require('./restrictedArea/restrictedAreaRoutes.js')(express.Router(), expressApp, restrictedAreaRoutesMethods)
+const dashboardRoutesMethods=require('./dashboard/dashboardRoutesMethods.js')
 const authRoutesMethods = require('./authorisation/authRoutesMethods')(userDBHelper)
 const authRoutes = require('./authorisation/authRoutes')(express.Router(), expressApp, authRoutesMethods)
+const dashboradRoutes = require('./dashboard/dashboardRoutes')(express.Router(), expressApp, dashboardRoutesMethods)
 const bodyParser = require('body-parser')
 
-//MARK: --- REQUIRE MODULES
 
-//MARK: --- INITIALISE MIDDLEWARE & ROUTES
 
 //set the bodyParser to parse the urlencoded post data
 expressApp.use(bodyParser.urlencoded({ extended: true }))
@@ -32,9 +31,8 @@ expressApp.use(expressApp.oauth.errorHandler())
 expressApp.use('/auth', authRoutes)
 
 //set the restrictedAreaRoutes used to demo the accesiblity or routes that ar OAuth2 protected
-expressApp.use('/restrictedArea', restrictedAreaRoutes)
+expressApp.use('/dashboard', dashboradRoutes)
 
-//MARK: --- INITIALISE MIDDLEWARE & ROUTES
 
 //init the server
 expressApp.listen(port, () => {

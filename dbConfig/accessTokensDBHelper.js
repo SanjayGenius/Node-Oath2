@@ -51,6 +51,7 @@ function getUserIDFromBearerToken(bearerToken, callback){
       //get the userID from the results if its available else assign null
       const userID = dataResponseObject.results != null && dataResponseObject.results.length == 1 ?
                                                               dataResponseObject.results[0].user_id : null
+      console.log(userID+"!!!!!!")
 
       callback(userID)
   })

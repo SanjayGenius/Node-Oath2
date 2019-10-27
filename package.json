@@ -8,7 +8,8 @@
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
     "mysql": "^2.13.0",
-    "node-oauth2-server": "^2.4.0"
+    "node-oauth2-server": "^2.4.0",
+    "request": "^2.88.0"
   },
   "devDependencies": {},
   "scripts": {
