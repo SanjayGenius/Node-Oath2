@@ -1,7 +1,6 @@
 var request = require('request');
 const url = 'http://localhost:4000/dashboard';
 module.exports =  {
-
     viewDashboard: viewDashboard
   }
   
