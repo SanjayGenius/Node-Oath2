@@ -6,7 +6,8 @@ module.exports = injectedUserDBHelper => {
 
   return {
     registerUser: registerUser,
-    login: login
+    login: login,
+    getmessage:getmessage
   }
 }
 
@@ -44,7 +45,9 @@ function registerUser(req, res){
     })
   }
 
-
+function getmessage(req,res){
+  res.send("SUCCESS");
+}
 
 
 function login(registerUserQuery, res){

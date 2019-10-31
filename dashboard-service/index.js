@@ -1,3 +1,5 @@
+const port = 8095
+require('./eurekahelper/eureka-helper').registerWithEureka('dashboard-service', port);
 var express = require("express");
 var bodyParser = require("body-parser");
 var app = express();
@@ -11,6 +13,6 @@ app.use(function(req, res, next) {
     next();
   });
   var routes = require("./routes/routes.js")(app);
-  var server = app.listen(4000, function () {
+  var server = app.listen(port, function () {
     console.log("Listening on port %s...", server.address().port);
 })

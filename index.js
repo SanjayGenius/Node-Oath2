@@ -1,4 +1,5 @@
 const port = 8094
+require('./eurekahelper/eureka-helper').registerWithEureka('login-service', port);
 const mySqlConnection = require('./dbConfig/sqlConfig')
 const accessTokenDBHelper = require('./dbConfig/accessTokensDBHelper')(mySqlConnection)
 const userDBHelper = require('./dbConfig/userDBHelper')(mySqlConnection)
