@@ -1,5 +1,5 @@
 var request = require('request');
-const url = 'http://localhost:4000/dashboard';
+const url = 'http://localhost:8095/dashboard';
 module.exports =  {
     viewDashboard: viewDashboard
   }
@@ -8,11 +8,11 @@ module.exports =  {
     request(url,
         function (error, response, body) {
             if (!error && response.statusCode == 200) {
-                console.log(response+"!!!!!!!!!!!");
+                console.log(response.statusCode+"!!!!!!!!!!!");
                 //response = JSON.parse(body);
                 res.send(response);
             } else {
-                console.log(response.statusCode + response.body);
+                //console.log(response.statusCode + response.body);
                 res.send("Error while calling dashboard details");
             }
         });

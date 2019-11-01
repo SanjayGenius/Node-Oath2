@@ -11,9 +11,9 @@ function initConnection() {
 
    connection = mySql.createConnection({
 
-    host: 'localhost',
-    user: 'root',
-    password: 'sanjay',
+    host: '10.10.1.50',
+    user: 'pic',
+    password: 'picadmin',
     database: 'do'
   })
 }
@@ -36,6 +36,7 @@ function query(queryString, callback){
 
   //execute the query and collect the results in the callback
   connection.query(queryString, function(error, results, fields){
+    console.log(queryString)
 
       console.log('mySql: query: error is: ', error, ' and results are: ', results);
 

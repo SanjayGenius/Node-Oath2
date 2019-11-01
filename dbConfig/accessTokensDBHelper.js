@@ -47,6 +47,7 @@ function getUserIDFromBearerToken(bearerToken, callback){
 
   //execute the query to get the userID
   mySqlConnection.query(getUserIDQuery, (dataResponseObject) => {
+    console.log(dataResponseObject);
 
       //get the userID from the results if its available else assign null
       const userID = dataResponseObject.results != null && dataResponseObject.results.length == 1 ?
