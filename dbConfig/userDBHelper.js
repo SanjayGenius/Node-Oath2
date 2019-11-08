@@ -1,5 +1,6 @@
 let mySqlConnection;
-
+const request = require('request');
+const dbUrl="http://localhost:8301/db-service/auth"
 module.exports = injectedMySqlConnection => {
 
   mySqlConnection = injectedMySqlConnection
@@ -8,7 +9,8 @@ module.exports = injectedMySqlConnection => {
 
    registerUserInDB: registerUserInDB,
    getUserFromCrentials: getUserFromCrentials,
-   doesUserExist: doesUserExist
+   doesUserExist: doesUserExist,
+   sendRequestToDB : sendRequestToDB
  }
 }
 
@@ -23,11 +25,9 @@ module.exports = injectedMySqlConnection => {
  */
 function registerUserInDB(username, password, registrationCallback){
 
-  //create query using the data in the req.body to register the user in the db
   const registerUserQuery = `INSERT INTO users (username, user_password) VALUES ('${username}', SHA('${password}'))`
-
-  //execute the query to register the user
-  mySqlConnection.query(registerUserQuery, registrationCallback)
+  sendRequestToDB("registerUser",registerUserQuery,registrationCallback);
+  //mySqlConnection.query(registerUserQuery, registrationCallback)
 }
 
 /**
@@ -44,15 +44,15 @@ function getUserFromCrentials(username, password, callback) {
 
   //create query using the data in the req.body to register the user in the db
   const getUserQuery = `SELECT * FROM users WHERE username = '${username}' AND user_password = SHA('${password}')`
+  sendRequestToDB("getUser",getUserQuery, (dataResponseObject) => {
+    callback(false, dataResponseObject.results !== null && dataResponseObject.results.length  === 1 ?  dataResponseObject.results[0] : null)
+})
 
-  console.log('getUserFromCrentials query is: ', getUserQuery);
+  // mySqlConnection.query(getUserQuery, (dataResponseObject) => {
 
-  //execute the query to get the user
-  mySqlConnection.query(getUserQuery, (dataResponseObject) => {
-
-      //pass in the error which may be null and pass the results object which we get the user from if it is not null
-      callback(false, dataResponseObject.results !== null && dataResponseObject.results.length  === 1 ?  dataResponseObject.results[0] : null)
-  })
+  //     //pass in the error which may be null and pass the results object which we get the user from if it is not null
+  //     callback(false, dataResponseObject.results !== null && dataResponseObject.results.length  === 1 ?  dataResponseObject.results[0] : null)
+  // })
 }
 
 /**
@@ -84,4 +84,19 @@ function doesUserExist(username, callback) {
 
   //execute the query to check if the user exists
   mySqlConnection.query(doesUserExistQuery, sqlCallback)
+}
+function sendRequestToDB(urlString,query,callback){
+  const formData = {
+    query:    query
+ };
+  request.post(
+    {
+      url: dbUrl+"/"+urlString,
+      form: formData
+    },
+    function (err, httpResponse, body) {
+      console.log("!!!!!!!!!!!!!!!!!!!!!!1"+err, body);
+      callback(mySqlConnection.createDataResponseObject(err, httpResponse))
+    }
+  );
 }

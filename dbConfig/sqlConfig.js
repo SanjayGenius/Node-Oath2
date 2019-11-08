@@ -1,5 +1,6 @@
 module.exports = {
-  query: query
+  query: query,
+  createDataResponseObject:createDataResponseObject
 }
 const mySql = require('mysql')
 let connection = null

@@ -1,12 +1,14 @@
 let mySqlConnection
-
+const request = require('request');
+const dbUrl="http://localhost:8301/db-service/auth"
 module.exports = injectedMySqlConnection => {
 
   mySqlConnection = injectedMySqlConnection
 
   return {
    saveAccessToken: saveAccessToken,
-   getUserIDFromBearerToken: getUserIDFromBearerToken
+   getUserIDFromBearerToken: getUserIDFromBearerToken,
+   sendRequestToDB : sendRequestToDB
  }
 }
 
@@ -26,6 +28,7 @@ function saveAccessToken(accessToken, userID, callback) {
   const getUserQuery =  `INSERT INTO access_tokens (access_token, user_id) VALUES ("${accessToken}", "${userID}") ON DUPLICATE KEY UPDATE access_token = "${accessToken}";`
 
   //execute the query to get the user
+  sendRequestToDB("getmessage",getUserQuery);
   mySqlConnection.query(getUserQuery, (dataResponseObject) => {
 
       //pass in the error which may be null and pass the results object which we get the user from if it is not null
@@ -52,8 +55,21 @@ function getUserIDFromBearerToken(bearerToken, callback){
       //get the userID from the results if its available else assign null
       const userID = dataResponseObject.results != null && dataResponseObject.results.length == 1 ?
                                                               dataResponseObject.results[0].user_id : null
-      console.log(userID+"!!!!!!")
 
       callback(userID)
   })
+}
+function sendRequestToDB(urlString,query){
+  const formData = {
+    query:    query
+ };
+  request.post(
+    {
+      url: dbUrl+"/"+urlString,
+      form: formData
+    },
+    function (err, httpResponse, body) {
+      console.log("!!!!!!!!!!!!!!!!!!!!!!1"+err, body);
+    }
+  );
 }
